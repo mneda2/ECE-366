@@ -2,14 +2,14 @@ module one_bit_full_adder(A, B, Cin, S, Cout);
     input A, B, Cin;
     output S, Cout;
     
-    wire sum1, carry1, carry2;
+	wire int2,int3,int4;    
+  	wire int1;
+  	xor V1(int1, A, B);
+  	xor V2(S, Cin, int1);
     
-    xor XOR1(sum1, A, B);
-    xor XOR2(S, sum1, Cin);
+  	and A1(int2, A, B);
+  	and A2(int3, B, Cin);
+ 	and A3(int4,Cin,A);
     
-    and AND1(carry1, A, B);
-    and AND2(carry2, sum1, Cin);
-    
-    or OR1(Cout, carry1, carry2);
-    
+    or A4(Cout,int2, int3, int4);
 endmodule
