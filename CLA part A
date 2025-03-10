@@ -1,0 +1,49 @@
+module carry_lookahead_adder_4bit(A, B, Cin, S, Cout);  
+  input [3:0] A, B;                                 
+  input Cin;
+  output [3:0] S;
+  output Cout;
+  
+  wire [3:0] P, G;  
+  wire c1, c2, c3;  
+ 
+  assign P = A ^ B;   
+  assign G = A & B;   
+
+  assign c1 = G[0] | (P[0] & Cin);
+  assign c2 = G[1] | (P[1] & c1);
+  assign c3 = G[2] | (P[2] & c2);
+  assign Cout = G[3] | (P[3] & c3);  
+  
+
+  assign S[0] = P[0] ^ Cin;
+  assign S[1] = P[1] ^ c1;
+  assign S[2] = P[2] ^ c2;
+  assign S[3] = P[3] ^ c3;
+
+endmodule 
+
+
+
+
+
+
+module carry_lookahead_adder_32bit(A, B, Cin, S, Cout); 
+  input [31:0] A, B;   
+  input Cin;           
+  output [31:0] S;    
+  output Cout;         
+  
+  wire c1, c2, c3, c4, c5, c6, c7; 
+
+  
+  carry_lookahead_adder_4bit CLA0(A[3:0],   B[3:0],   Cin, S[3:0],   c1);
+  carry_lookahead_adder_4bit CLA1(A[7:4],   B[7:4],   c1,  S[7:4],   c2);
+  carry_lookahead_adder_4bit CLA2(A[11:8],  B[11:8],  c2,  S[11:8],  c3);
+  carry_lookahead_adder_4bit CLA3(A[15:12], B[15:12], c3,  S[15:12], c4);
+  carry_lookahead_adder_4bit CLA4(A[19:16], B[19:16], c4,  S[19:16], c5);
+  carry_lookahead_adder_4bit CLA5(A[23:20], B[23:20], c5,  S[23:20], c6);
+  carry_lookahead_adder_4bit CLA6(A[27:24], B[27:24], c6,  S[27:24], c7);
+  carry_lookahead_adder_4bit CLA7(A[31:28], B[31:28], c7,  S[31:28], Cout);
+
+endmodule
