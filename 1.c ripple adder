@@ -14,9 +14,10 @@ module ripple_carry_adder_4bit(A, B, Cin, S, Cout);
 
     
 endmodule
-
-module ripple_carry_adder_4bit(A, B, Cin, S, Cout); // tried on EDA playground and got no errors, 
-  input [3:0] A, B;                                 // Circuitverse was giving errors for some reason
+// tried on EDA playground and got no errors,
+// Circuitverse was giving errors for some reason
+module ripple_carry_adder_4bit(A, B, Cin, S, Cout);  
+  input [3:0] A, B;                                 
   input Cin;
   output [3:0] S;
   output Cout;
