@@ -105,6 +105,7 @@ module bit16PPA(A, B, Cin, S, Cout);
     
     
     // Generate carry bits for each bit position
+    // Wouldnt these bits need more than just Gp? Including Pp in could help.
     assign C[0] = Cin; 
     assign C[1] = Gp[0]; 
     assign C[2] = Gp[1]; 
@@ -123,7 +124,8 @@ module bit16PPA(A, B, Cin, S, Cout);
     assign C[15] = Gp[14];   
     
     assign Cout = Gp[15];
-  	
+
+    // Maybe use P instead of G?
     assign S = G ^ C;
     
 endmodule
