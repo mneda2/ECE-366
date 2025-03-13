@@ -5,7 +5,6 @@ module testbench;
   wire [3:0] S;         // 4-bit Sum or Difference
   wire Cout, Bout;      // Carry-out (for RCA) and Borrow-out (for RCS)
 
-  // Instantiate the RCA (Ripple Carry Adder)
    4bitadde.sv (
     .A(A), 
     .B(B), 
@@ -14,7 +13,6 @@ module testbench;
     .Cout(Cout)
   );
 
-  // Instantiate the RCS (Ripple Carry Subtractor)
   4_bit_subtractor.sv  (
     .A(A),
     .B(B),
@@ -24,38 +22,37 @@ module testbench;
   );
 
   initial begin
-    // Initialize signals
     $display("4-bit RCA and RCS Testbench");
 
-    // Test case 1: Unsigned Addition (A = 5, B = 3)
+    //Unsigned Addition (A = 5, B = 3)
     A = 4'b0101;  // A = 5
     B = 4'b0011;  // B = 3
     Cin = 0;      // No initial carry
     #10;
     $display("Unsigned Addition: A = %b, B = %b, Sum = %b, Carry Out = %b", A, B, S, Cout);
 
-    // Test case 2: Signed Addition (A = -3, B = 2)
+    //Signed Addition (A = -3, B = 2)
     A = 4'b1101;  // A = -3 (in 2's complement)
     B = 4'b0010;  // B = 2
     Cin = 0;      // No initial carry
     #10;
     $display("Signed Addition: A = %b, B = %b, Sum = %b, Carry Out = %b", A, B, S, Cout);
 
-    // Test case 3: Unsigned Subtraction (A = 6, B = 3)
+    //Unsigned Subtraction (A = 6, B = 3)
     A = 4'b0110;  // A = 6
     B = 4'b0011;  // B = 3
-    Bin = 1;      // Set Bin to 1 for two's complement subtraction
+    Bin = 1;      // two's complement
     #10;
     $display("Unsigned Subtraction: A = %b, B = %b, Difference = %b, Borrow Out = %b", A, B, S, Bout);
 
-    // Test case 4: Signed Subtraction (A = -4, B = -2)
+    //Signed Subtraction (A = -4, B = -2)
     A = 4'b1100;  // A = -4
-    B = 4'b1110;  // B = -2 (in 2's complement)
-    Bin = 1;      // Set Bin to 1 for two's complement subtraction
+    B = 4'b1110;  // B = -2
+    Bin = 1;      // two's complement
     #10;
     $display("Signed Subtraction: A = %b, B = %b, Difference = %b, Borrow Out = %b", A, B, S, Bout);
 
-    // Test case 5: Unsigned Overflow Addition (A = 15, B = 1)
+    //Unsigned Overflow Addition (A = 15, B = 1)
     A = 4'b1111;  // A = 15
     B = 4'b0001;  // B = 1
     Cin = 0;      // No initial carry
@@ -70,20 +67,19 @@ module testbench;
     $display("Signed Overflow Addition: A = %b, B = %b, Sum = %b, Carry Out = %b", A, B, S, Cout);
 
     // Test case 7: Unsigned Borrow Subtraction (A = 2, B = 6)
-    A = 4'b0010; 
-    B = 4'b0110; 
-    Bin = 1;      
+    A = 4'b0010;  // A = 2
+    B = 4'b0110;  // B = 6
+    Bin = 1;      // two's complement
     #10;
     $display("Unsigned Borrow Subtraction: A = %b, B = %b, Difference = %b, Borrow Out = %b", A, B, S, Bout);
 
     // Test case 8: Signed Borrow Subtraction (A = -2, B = 3)
-    A = 4'b1110;  
-    B = 4'b0011;  
-    Bin = 1;      
+    A = 4'b1110;  // A = -2
+    B = 4'b0011;  // B = 3
+    Bin = 1;      // two's complement
     #10;
     $display("Signed Borrow Subtraction: A = %b, B = %b, Difference = %b, Borrow Out = %b", A, B, S, Bout);
 
-    // End simulation
     $finish;
   end
 
