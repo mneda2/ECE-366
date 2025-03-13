@@ -14,3 +14,39 @@ module ripple_carry_subtractor_4bit(A, B, Bin, D, Bout);
 
 endmodule
   //cin set to 1, b is found the negative
+
+*******************************************************
+module ripple_carry_subtractor_4bit(A, B, mode, D, Cout); 
+  input [3:0] A, B;
+  
+  input mode;
+  output [3:0] D;
+  output Cout;
+  wire [3:0] B_op;
+
+  wire c1, c2, c3;
+  assign B_op = B ^ {4{mode}}; // if mode = 1 via testbench, then it will be B( 4- bit ) XOR 1111, which will give the inverted output
+
+  one_bit_full_adder_b FA0(A[0], B_op[0], mode, D[0], c1); 
+  one_bit_full_adder_b FA1(A[1], B_op[1], c1, D[1], c2);   
+  one_bit_full_adder_b FA2(A[2], B_op[2], c2, D[2], c3);    
+  one_bit_full_adder_b FA3(A[3], B_op[3], c3, D[3], Cout);  
+
+endmodule
+
+module one_bit_full_adder_b(A, B, Cin, S, // another example
+Cout);
+
+  input A, B, Cin;
+  output S, Cout;
+
+ // Your code
+ 
+  wire m,v,p;
+  xor (m, A, B);
+  xor (S, m, Cin);
+  and (v, A, B);
+  and (p, m, Cin);
+  or (Cout,v,p);
+
+endmodule
