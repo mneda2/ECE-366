@@ -7,7 +7,7 @@ module testbench;
   wire Cout;
 
   // Instantiate the module
-  ripple_carry_adder_subtractor_4bit uut (
+  ripple_carry_adder_subtractor_4bit dut (
     .A(A), 
     .B(B), 
     .mode(mode), 
@@ -17,8 +17,8 @@ module testbench;
 
   initial begin
     // Print header
-    $display("Time   | A     B    Mode | D     Cout");
-    $display("-------------------------------------");
+    $display("Time   | A     B    Mode | D     Cout   |  Expected");
+    $display("-----------------------------------------------------");
 
     // Monitor for continuous printing
     $monitor("%0d ns | %b  %b   %b   | %b    %b", 
@@ -26,15 +26,19 @@ module testbench;
 
     // Test 1: Addition (3 + 2 = 5)
     A = 4'b0011; B = 4'b0010; mode = 0; #10;
+    $display("Test 1: Expected: D = 0101, Cout = 0");
 
     // Test 2: Subtraction (5 - 3 = 2)
     A = 4'b0101; B = 4'b0011; mode = 1; #10;
+    $display("Test 2: Expected: D = 0010, Cout = 0");
 
     // Test 3: Unsigned overflow (15 + 1 = 0 with carry)
     A = 4'b1111; B = 4'b0001; mode = 0; #10;
+    $display("Test 3: Expected: D = 0000, Cout = 1");
 
     // Test 4: Signed subtraction (-8 - 1 = -9)
     A = 4'b1000; B = 4'b0001; mode = 1; #10;
+    $display("Test 4: Expected: D = 0111, Cout = 1");
 
     $finish;  // End the simulation
   end
@@ -46,40 +50,4 @@ endmodule
 
 
 
-// MAIN CODE - mode included
 
-// Code your design here
-module ripple_carry_subtractor_4bit(A, B, mode, D, Cout); 
-  input [3:0] A, B;
-  
-  input mode;
-  output [3:0] D;
-  output Cout;
-  wire [3:0] B_op;
-
-  wire c1, c2, c3;
-  assign B_op = B ^ {4{mode}}; // if mode = 1 via testbench, then it will be B( 4- bit ) XOR 1111, which will give the inverted output
-
-  one_bit_full_adder_b FA0(A[0], B_op[0], mode, D[0], c1); 
-  one_bit_full_adder_b FA1(A[1], B_op[1], c1, D[1], c2);   
-  one_bit_full_adder_b FA2(A[2], B_op[2], c2, D[2], c3);    
-  one_bit_full_adder_b FA3(A[3], B_op[3], c3, D[3], Cout);  
-
-endmodule
-
-module one_bit_full_adder_b(A, B, Cin, S, // another example
-Cout);
-
-  input A, B, Cin;
-  output S, Cout;
-
- // Your code
- 
-  wire m,v,p;
-  xor (m, A, B);
-  xor (S, m, Cin);
-  and (v, A, B);
-  and (p, m, Cin);
-  or (Cout,v,p);
-
-endmodule
