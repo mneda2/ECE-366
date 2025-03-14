@@ -19,6 +19,10 @@ module testbench_16bitPPA;
   );
 
   initial begin
+    // Setup for waveform generation
+    $dumpfile("testbench_16bitPPA.vcd"); // Output VCD file
+    $dumpvars(0, testbench_16bitPPA);    // Dump all variables in the testbench
+
     // Monitor the outputs and compare them with expected values
     $monitor("Time=%0t A=%h B=%h Cin=%b => S=%h Cout=%b | Expected S=%h Expected Cout=%b", 
              $time, A, B, Cin, S, Cout, expected_S, expected_Cout);
@@ -43,12 +47,4 @@ module testbench_16bitPPA;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFF;
     #10;
 
-    // Test Case 5: A = 0x1357, B = 0x2468, Cin =
-    A = 'h1357; B = 'h2468; Cin = 1;
-    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFF;
-    #10;
-
-    $stop;
-  end
-
-endmodule
+    // Test Case 5: A = 0x1357, B = 0x2468, Cin = 1
