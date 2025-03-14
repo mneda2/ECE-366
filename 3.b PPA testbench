@@ -1,5 +1,3 @@
-`timescale 1ns/1ps  
-
 module testbench_16bitPPA;
 
   reg [15:0] A, B;          // 16-bit inputs
@@ -20,31 +18,39 @@ module testbench_16bitPPA;
 
   initial begin
     // Setup for waveform generation
-    $dumpfile("testbench_16bitPPA.vcd"); // Output VCD file
-    $dumpvars(0, testbench_16bitPPA);    // Dump all variables in the testbench
+    $dumpfile("testbench_16bitPPA.vcd"); // Specify the VCD file
+    $dumpvars(0, testbench_16bitPPA);    // Dump all variables in this module
 
-    // Monitor the outputs and compare them with expected values
     $monitor("Time=%0t A=%h B=%h Cin=%b => S=%h Cout=%b | Expected S=%h Expected Cout=%b", 
              $time, A, B, Cin, S, Cout, expected_S, expected_Cout);
 
     // Test Case 1: A = 0, B = 0, Cin = 0
-    A = 'h0000; B = 'h0000; Cin = 0;
-    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFF;
+    A = 16'h0000; B = 16'h0000; Cin = 0;
+    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 16'hFFFF;
     #10;
 
     // Test Case 2: A = 0xFFFF, B = 0x0001, Cin = 0
-    A = 'hFFFF; B = 'h0001; Cin = 0;
-    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFF;
+    A = 16'hFFFF; B = 16'h0001; Cin = 0;
+    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 16'hFFFF;
     #10;
 
     // Test Case 3: A = 0x1234, B = 0x5678, Cin = 0
-    A = 'h1234; B = 'h5678; Cin = 0;
-    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFF;
+    A = 16'h1234; B = 16'h5678; Cin = 0;
+    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 16'hFFFF;
     #10;
 
     // Test Case 4: A = 0x8000, B = 0x8000, Cin = 0
-    A = 'h8000; B = 'h8000; Cin = 0;
-    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFF;
+    A = 16'h8000; B = 16'h8000; Cin = 0;
+    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 16'hFFFF;
     #10;
 
     // Test Case 5: A = 0x1357, B = 0x2468, Cin = 1
+    A = 16'h1357; B = 16'h2468; Cin = 1;
+    expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 16'hFFFF;
+    #10;
+
+    // End simulation properly
+    $finish;
+  end
+
+endmodule
