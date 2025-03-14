@@ -1,9 +1,9 @@
 module testbench;
 
-  reg [3:0] A, B;      // 4-bit input operands
-  reg Cin, Bin;         // Carry-in (for RCA) and Borrow-in (for RCS)
-  wire [3:0] S;         // 4-bit Sum or Difference
-  wire Cout, Bout;      // Carry-out (for RCA) and Borrow-out (for RCS)
+  reg [3:0] A, B;
+  reg Cin, Bin;
+  wire [3:0] S;
+  wire Cout, Bout;
 
    4bitadde.sv (
     .A(A), 
@@ -22,8 +22,7 @@ module testbench;
   );
 
   initial begin
-    $display("4-bit RCA and RCS Testbench");
-
+ 
     //Unsigned Addition (A = 5, B = 3)
     A = 4'b0101;  // A = 5
     B = 4'b0011;  // B = 3
