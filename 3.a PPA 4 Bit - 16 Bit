@@ -46,14 +46,12 @@ module PPA_16bit (
     output [15:0] S,
     output Cout
 );
-    wire [15:0] P, G;  // Propagate and Generate signals
-    wire [15:0] P_block, G_block; // Block-level Propagate and Generate
+    wire [15:0] P, G;
+    wire [15:0] P_block, G_block;
 
-    // Pre-computation (Generate and Propagate)
     assign P = A | B;
     assign G = A & B;
 
-    // Block-level generation and propagation (using AND/OR gates)
     assign P_block[0] = P[0];
     assign G_block[0] = G[0];
 
@@ -65,7 +63,6 @@ module PPA_16bit (
         end
     endgenerate
 
-    // Sum calculation using block-level G and P
     assign S[0] = G_block[0] ^ (A[0] ^ B[0]);
     generate
         for (i = 1; i < 16; i = i + 1) begin : sum
@@ -73,7 +70,6 @@ module PPA_16bit (
         end
     endgenerate
 
-    // Carry-out computation
     assign Cout = G_block[15] | (P_block[15] & G[14]);
 
 endmodule
