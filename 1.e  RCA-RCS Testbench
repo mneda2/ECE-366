@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps  // Specify time unit and precision
+`timescale 1ns / 1ps
 
 module testbench;
   reg [3:0] A, B;
