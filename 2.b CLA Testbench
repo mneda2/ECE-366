@@ -44,7 +44,6 @@ module testbench_32bit_CLA;
     A = 32'h13579BDF; B = 32'h2468ACE0; Cin = 1;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFFFFFF;
 
-    // Stop the simulation
     $stop;
   end
 
