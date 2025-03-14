@@ -2,7 +2,6 @@
 
 module testbench_32bit_CLA;
 
- 
   reg [31:0] A, B;
   reg Cin;
   wire [31:0] S;
@@ -10,7 +9,6 @@ module testbench_32bit_CLA;
   reg [31:0] expected_S;
   reg expected_Cout;
 
-  
   carry_lookahead_adder_32bit DUT (
     .A(A), 
     .B(B), 
@@ -19,36 +17,45 @@ module testbench_32bit_CLA;
     .Cout(Cout)
   );
 
-  
   initial begin
-    
+    // Setup for waveform generation
+    $dumpfile("testbench_32bit_CLA.vcd"); // Output VCD file
+    $dumpvars(0, testbench_32bit_CLA);    // Dump all variables in the testbench
+
     $monitor("Time=%0t A=%h B=%h Cin=%b => S=%h Cout=%b | Expected S=%h Expected Cout=%b", 
              $time, A, B, Cin, S, Cout, expected_S, expected_Cout);
 
-    
+    // Test case 1: A = 0, B = 0, Cin = 0
     A = 32'h00000000; B = 32'h00000000; Cin = 0;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFFFFFF;
-    #10; 
-    
-   
+    #10;
+
+    // Test case 2: A = 0xFFFFFFFF, B = 1, Cin = 0
     A = 32'hFFFFFFFF; B = 32'h00000001; Cin = 0;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFFFFFF;
     #10;
-    
-   
+
+    // Test case 3: A = 0x12345678, B = 0x9ABCDEF0, Cin = 0
     A = 32'h12345678; B = 32'h9ABCDEF0; Cin = 0;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFFFFFF;
     #10;
-    
-    
+
+    // Test case 4: A = 0x80000000, B = 0x80000000, Cin = 0
     A = 32'h80000000; B = 32'h80000000; Cin = 0;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFFFFFF;
     #10;
 
-    
+    // Test case 5: A = 0x13579BDF, B = 0x2468ACE0, Cin = 1
     A = 32'h13579BDF; B = 32'h2468ACE0; Cin = 1;
     expected_S = A + B + Cin; expected_Cout = (A + B + Cin) > 'hFFFFFFFF;
     #10;
+
+    // Stop the simulation
+    $stop;
+  end
+
+endmodule
+
     
     
     $stop;
