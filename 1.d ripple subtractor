@@ -1,52 +1,36 @@
-module ripple_carry_subtractor_4bit(A, B, Bin, D, Bout); 
-  input [3:0] A, B;
-  input Bin;
-  output [3:0] D;
-  output Bout;
+module ripple_carry_adder_subtractor_4bit(
+    input [3:0] A, B,
+    input mode,  
+    output wire [3:0] S, 
+    output wire Cout
+);
+    reg [3:0] B_operand;
+    wire c1, c2, c3;
 
-  wire b1, b2, b3;
+    always @(*) begin
+        if (mode == 1) begin
+            B_operand = ~B;
+        end 
+        else begin
+            B_operand = B;
+        end
+    end
 
-
-  one_bit_full_adder_b FA0(A[0], ~B[0], 1, D[0], b1); 
-  one_bit_full_adder_b FA1(A[1], ~B[1], b1, D[1], b2);   
-  one_bit_full_adder_b FA2(A[2], ~B[2], b2, D[2], b3);    
-  one_bit_full_adder_b FA3(A[3], ~B[3], b3, D[3], Bout);  
-
-endmodule
-  //cin set to 1, b is found the negative
-
-*******************************************************
-module ripple_carry_subtractor_4bit(A, B, mode, D, Cout); 
-  input [3:0] A, B;
-  
-  input mode;
-  output [3:0] D;
-  output Cout;
-  wire [3:0] B_op;
-
-  wire c1, c2, c3;
-  assign B_op = B ^ {4{mode}}; // if mode = 1 via testbench, then it will be B( 4- bit ) XOR 1111, which will give the inverted output
-
-  one_bit_full_adder_b FA0(A[0], B_op[0], mode, D[0], c1); 
-  one_bit_full_adder_b FA1(A[1], B_op[1], c1, D[1], c2);   
-  one_bit_full_adder_b FA2(A[2], B_op[2], c2, D[2], c3);    
-  one_bit_full_adder_b FA3(A[3], B_op[3], c3, D[3], Cout);  
+    one_bit_full_adder_b FA0(A[0], B_operand[0], mode, S[0], c1);
+    one_bit_full_adder_b FA1(A[1], B_operand[1], c1, S[1], c2);
+    one_bit_full_adder_b FA2(A[2], B_operand[2], c2, S[2], c3);
+    one_bit_full_adder_b FA3(A[3], B_operand[3], c3, S[3], Cout);
 
 endmodule
 
-module one_bit_full_adder_b(A, B, Cin, S, // another example
-Cout);
-
-  input A, B, Cin;
-  output S, Cout;
-
- // Your code
- 
-  wire m,v,p;
-  xor (m, A, B);
-  xor (S, m, Cin);
-  and (v, A, B);
-  and (p, m, Cin);
-  or (Cout,v,p);
-
+module one_bit_full_adder_b(
+    input A, B, Cin,
+    output S, Cout
+);
+    wire m, v, p;
+    xor (m, A, B);
+    xor (S, m, Cin);
+    and (v, A, B);
+    and (p, m, Cin);
+    or (Cout, v, p);
 endmodule
