@@ -6,7 +6,6 @@ module testbench;
   wire [3:0] S;
   wire Cout;
 
-  // Instantiate the module
   ripple_carry_adder_subtractor_4bit dut (
     .A(A), 
     .B(B), 
@@ -16,11 +15,6 @@ module testbench;
   );
 
   initial begin
-    // Print header
-    $display("Time   | A     B    Mode | S     Cout   |  Expected");
-    $display("-----------------------------------------------------");
-
-    // Monitor for continuous printing
     $monitor("%0d ns | %b  %b   %b   | %b    %b", 
              $time, A, B, mode, S, Cout);
 
@@ -40,6 +34,6 @@ module testbench;
     A = 4'b1000; B = 4'b0001; mode = 1; #10;
     $display("Test 4: Expected: S = 0111, Cout = 1");
 
-    $finish;  // End the simulation
+    $finish;
   end
 endmodule
