@@ -3,7 +3,7 @@
 module testbench;
   reg [3:0] A, B;
   reg mode;
-  wire [3:0] D;
+  wire [3:0] S;
   wire Cout;
 
   // Instantiate the module
@@ -11,43 +11,35 @@ module testbench;
     .A(A), 
     .B(B), 
     .mode(mode), 
-    .D(D), 
+    .S(S), 
     .Cout(Cout)
   );
 
   initial begin
     // Print header
-    $display("Time   | A     B    Mode | D     Cout   |  Expected");
+    $display("Time   | A     B    Mode | S     Cout   |  Expected");
     $display("-----------------------------------------------------");
 
     // Monitor for continuous printing
     $monitor("%0d ns | %b  %b   %b   | %b    %b", 
-             $time, A, B, mode, D, Cout);
+             $time, A, B, mode, S, Cout);
 
     // Test 1: Addition (3 + 2 = 5)
     A = 4'b0011; B = 4'b0010; mode = 0; #10;
-    $display("Test 1: Expected: D = 0101, Cout = 0");
+    $display("Test 1: Expected: S = 0101, Cout = 0");
 
     // Test 2: Subtraction (5 - 3 = 2)
     A = 4'b0101; B = 4'b0011; mode = 1; #10;
-    $display("Test 2: Expected: D = 0010, Cout = 0");
+    $display("Test 2: Expected: S = 0010, Cout = 0");
 
     // Test 3: Unsigned overflow (15 + 1 = 0 with carry)
     A = 4'b1111; B = 4'b0001; mode = 0; #10;
-    $display("Test 3: Expected: D = 0000, Cout = 1");
+    $display("Test 3: Expected: S = 0000, Cout = 1");
 
     // Test 4: Signed subtraction (-8 - 1 = -9)
     A = 4'b1000; B = 4'b0001; mode = 1; #10;
-    $display("Test 4: Expected: D = 0111, Cout = 1");
+    $display("Test 4: Expected: S = 0111, Cout = 1");
 
     $finish;  // End the simulation
   end
 endmodule
-
-
-
-
-
-
-
-
